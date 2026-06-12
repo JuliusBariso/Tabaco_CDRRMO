@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabaco City Disaster Risk Reduction & Management Office</title>
-    <!-- Font Awesome Link for Icons -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -86,15 +85,70 @@
             text-transform: uppercase;
         }
 
-        nav a {
+        /* --- Dropdown Menu System --- */
+        .menu-container {
+            position: relative;
+        }
+
+        .menu-toggle {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .menu-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-links {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background-color: #111111;
+            border: 1px solid #333;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+        }
+
+        /* Class toggled by JavaScript to show menu */
+        .nav-links.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            padding: 12px 20px;
+            margin-left: 0;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--primary-color);
             color: white;
             text-decoration: none;
-            margin-left: 20px;
-            font-size: 15px;
-            font-weight: 500;
-        }
-        nav a:hover {
-            text-decoration: underline;
         }
 
         /* --- Featured Media & Bulletin Board --- */
@@ -166,6 +220,33 @@
             background-color: rgba(0,0,0,0.8);
         }
 
+        /* --- Monitoring Section (Windy Map Box) --- */
+        .monitoring-section {
+            background-color: #ffffff;
+            padding: 30px 5% 0 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .windy-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
+            background-color: #1c1a19;
+            /* Maintaining a clear portrait ratio look */
+            aspect-ratio: 3 / 4; 
+            max-height: 520px;
+        }
+
+        .windy-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         /* Tabbed Information Panel */
         .board-container {
             background: #fafafa;
@@ -173,8 +254,11 @@
             border-radius: 8px;
             display: flex;
             flex-direction: column;
-            height: 380px;
+            /* Height matches the map portrait bounding height */
+            height: 100%;
+            max-height: 520px;
             overflow: hidden;
+            box-sizing: border-box;
         }
         .board-tabs {
             display: flex;
@@ -642,14 +726,15 @@
             font-size: 14px;
         }
 
-        /* Responsive styling for mobile */
+        /* Responsive styling for mobile/tablet devices */
         @media (max-width: 900px) {
-            .bulletin-section { grid-template-columns: 1fr; }
-            .slideshow-container, .board-container { height: 320px; }
+            .bulletin-section, .monitoring-section { grid-template-columns: 1fr; }
+            .slideshow-container { height: 320px; }
+            .windy-container { aspect-ratio: 4 / 5; max-height: 480px; }
+            .board-container { max-height: 400px; }
         }
         @media (max-width: 768px) {
-            header { flex-direction: column; gap: 15px; text-align: center; }
-            nav a { margin: 0 5px; font-size: 14px; }
+            header { flex-direction: row !important; justify-content: space-between !important; text-align: left !important; gap: 15px; }
             .hero h2 { font-size: 28px; }
             .chat-window { width: 300px; right: -10px; }
         }
@@ -663,7 +748,6 @@
 
     <header>
         <div class="logo-area">
-            <!-- NEW: Integrated Shield Insignia -->
             <img class="logo-img-frame" 
                  src="logo.png" 
                  alt="Tabaco City CDRRMO Shield Logo"
@@ -674,19 +758,23 @@
                 <p><strong>Tabaco City Disaster Risk Reduction & Management Office</strong></p>
             </div>
         </div>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#pillars">Our Mandate</a>
-            <a href="#org-chart">Leadership</a>
-            <a href="#action">In Action</a>
-            <a href="#crew">Our Crew</a>
-            <a href="#hotlines">Hotlines</a>
-        </nav>
+        
+        <div class="menu-container">
+            <button class="menu-toggle" onclick="toggleMenu(event)" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i> Menu
+            </button>
+            <nav id="navMenu" class="nav-links">
+                <a href="#about" onclick="closeMenu()">About</a>
+                <a href="#pillars" onclick="closeMenu()">Our Mandate</a>
+                <a href="#org-chart" onclick="closeMenu()">Leadership</a>
+                <a href="#action" onclick="closeMenu()">In Action</a>
+                <a href="#crew" onclick="closeMenu()">Our Crew</a>
+                <a href="#hotlines" onclick="closeMenu()">Hotlines</a>
+            </nav>
+        </div>
     </header>
 
-    <!-- Top News, Events & Slideshow Hub -->
     <div class="bulletin-section">
-        <!-- Interactive Slide System -->
         <div class="slideshow-container">
             <div class="mySlides">
                 <img src="https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/a-beautiful-sunset-at-the-mayon-volcano-william-e-rogers.jpg" alt="Mayon Scan Operations">
@@ -712,8 +800,18 @@
             <button class="prev-slide" onclick="plusSlides(-1)">❮</button>
             <button class="next-slide" onclick="plusSlides(1)">❯</button>
         </div>
+        
+        <div style="background-color: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; display: flex; flex-direction: column; justify-content: center; text-align: center;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary-color); font-size: 20px;">Live Tactical Situation Dashboard</h4>
+            <p style="margin: 0; font-size: 14px; color: #555; line-height: 1.5;">This operational bulletin panel houses live monitoring metrics, satellite updates, and active public announcements tracked by our Tabaco City command deck. Review environmental data maps and alerts concurrently on the feeds provided below.</p>
+        </div>
+    </div>
 
-        <!-- Tabbed Board Feed -->
+    <div class="monitoring-section">
+        <div class="windy-container">
+            <iframe src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricWind=default&zoom=8&overlay=wind&product=ecmwf&level=surface&lat=13.361&lon=123.731&detailLat=13.361&detailLon=123.731&marker=true" title="Live Windy Meteorological Tracking Map"></iframe>
+        </div>
+
         <div class="board-container">
             <div class="board-tabs">
                 <button class="tab-btn active" onclick="switchTab(event, 'announcements')">📢 Announcements</button>
@@ -721,7 +819,6 @@
                 <button class="tab-btn" onclick="switchTab(event, 'events')">📅 Upcoming Events</button>
             </div>
 
-            <!-- Announcements Panel -->
             <div id="announcements" class="board-content active">
                 <div class="news-item">
                     <span class="news-date">June 04, 2026</span>
@@ -735,7 +832,6 @@
                 </div>
             </div>
 
-            <!-- News Panel -->
             <div id="news" class="board-content">
                 <div class="news-item">
                     <span class="news-date">June 02, 2026</span>
@@ -749,7 +845,6 @@
                 </div>
             </div>
 
-            <!-- Events Panel -->
             <div id="events" class="board-content">
                 <div class="news-item">
                     <span class="news-date">June 15, 2026</span>
@@ -975,6 +1070,24 @@
     </footer>
 
     <script>
+        /* --- MENU TOGGLE LOGIC --- */
+        function toggleMenu(event) {
+            event.stopPropagation(); 
+            document.getElementById('navMenu').classList.toggle('show');
+        }
+
+        function closeMenu() {
+            document.getElementById('navMenu').classList.remove('show');
+        }
+
+        // Close dropdown globally if user clicks outside header zone
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            if (navMenu && !navMenu.contains(event.target)) {
+                closeMenu();
+            }
+        });
+
         if(!localStorage.getItem('user_responder1')) {
             localStorage.setItem('user_responder1', JSON.stringify({
                 username: 'responder1',
