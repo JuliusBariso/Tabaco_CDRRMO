@@ -191,11 +191,18 @@
             height: 100%;
             position: relative;
         }
-        .mySlides img, .prepSlides img {
+        /* First slideshow frame (Featured Bulletin) - stays full/cropped */
+        .mySlides img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Second slideshow frame (Hazard Preparedness) - shows the whole picture */
+        .prepSlides img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-			background-color: #D6D4D4
+            background-color: #1c1a19; /* Adds a clean dark background behind uncropped images */
         }
         .slide-caption {
             position: absolute;
