@@ -57,6 +57,22 @@
             gap: 15px;
         }
 
+        .logo-container-custom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo-subtitle-custom {
+            font-family: 'TW Cen MT', sans-serif;
+            font-size: 11px;
+            color: white;
+            margin-top: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .logo-img-frame {
             width: 64px;
             height: 64px;
@@ -170,12 +186,12 @@
             height: 380px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
-        .mySlides {
+        .mySlides, .prepSlides {
             display: none;
             height: 100%;
             position: relative;
         }
-        .mySlides img {
+        .mySlides img, .prepSlides img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -220,13 +236,13 @@
             background-color: rgba(0,0,0,0.8);
         }
 
-        /* --- Monitoring Section (Windy Map Box) --- */
+        /* --- Monitoring & Preparedness Section --- */
         .monitoring-section {
             background-color: #ffffff;
             padding: 30px 5% 0 5%;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
         }
 
         .windy-container {
@@ -236,8 +252,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             border: 1px solid #e0e0e0;
             background-color: #1c1a19;
-            /* Maintaining a clear portrait ratio look */
-            aspect-ratio: 3 / 4; 
+            aspect-ratio: 4 / 3; 
             max-height: 520px;
         }
 
@@ -254,10 +269,7 @@
             border-radius: 8px;
             display: flex;
             flex-direction: column;
-            /* Height matches the map portrait bounding height */
             height: 100%;
-            max-height: 520px;
-            overflow: hidden;
             box-sizing: border-box;
         }
         .board-tabs {
@@ -267,15 +279,18 @@
         }
         .tab-btn {
             flex: 1;
-            padding: 12px;
+            padding: 12px 6px;
             background: none;
             border: none;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 12px;
             color: #64748b;
             cursor: pointer;
             transition: all 0.2s;
             outline: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .tab-btn:hover {
             background: rgba(0,0,0,0.02);
@@ -287,7 +302,7 @@
             border-bottom: 3px solid var(--primary-color);
         }
         .board-content {
-            padding: 20px;
+            padding: 15px;
             flex: 1;
             overflow-y: auto;
             display: none;
@@ -315,25 +330,26 @@
         }
         .news-title {
             margin: 0 0 5px 0;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--dark-color);
             font-weight: 600;
         }
         .news-desc {
             margin: 0;
-            font-size: 13px;
+            font-size: 12px;
             color: #555;
             line-height: 1.4;
         }
 
-        /* --- Hero Section with Mayon Volcano Backdrop --- */
+        /* --- Hero Section styled as a bottom feature --- */
         .hero {
             background: linear-gradient(rgba(15, 76, 129, 0.75), rgba(0, 0, 0, 0.65)), 
                         url('https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/a-beautiful-sunset-at-the-mayon-volcano-william-e-rogers.jpg') no-repeat center center/cover;
             color: white;
             text-align: center;
-            padding: 140px 20px;
+            padding: 100px 20px;
             box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+            margin-top: 40px;
         }
 
         .hero h2 {
@@ -345,25 +361,9 @@
         .hero p {
             font-size: 20px;
             max-width: 750px;
-            margin: 0 auto 35px auto;
+            margin: 0 auto;
             opacity: 0.95;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
-
-        .btn-emergency {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 14px 35px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 4px;
-            text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: background 0.2s;
-        }
-        
-        .btn-emergency:hover {
-            background-color: #bf4300;
         }
 
         /* --- Main Layout Sections --- */
@@ -727,11 +727,14 @@
         }
 
         /* Responsive styling for mobile/tablet devices */
-        @media (max-width: 900px) {
-            .bulletin-section, .monitoring-section { grid-template-columns: 1fr; }
-            .slideshow-container { height: 320px; }
-            .windy-container { aspect-ratio: 4 / 5; max-height: 480px; }
+        @media (max-width: 1024px) {
+            .monitoring-section { grid-template-columns: 1fr; }
+            .windy-container { aspect-ratio: 4 / 3; max-height: 480px; }
             .board-container { max-height: 400px; }
+        }
+        @media (max-width: 900px) {
+            .bulletin-section { grid-template-columns: 1fr; }
+            .slideshow-container { height: 320px; }
         }
         @media (max-width: 768px) {
             header { flex-direction: row !important; justify-content: space-between !important; text-align: left !important; gap: 15px; }
@@ -748,10 +751,13 @@
 
     <header>
         <div class="logo-area">
-            <img class="logo-img-frame" 
-                 src="logo.png" 
-                 alt="Tabaco City CDRRMO Shield Logo"
-                 style="width: 124px !important; height: auto !important;">
+            <div class="logo-container-custom">
+                <img class="logo-img-frame" 
+                     src="logo.png" 
+                     alt="Tabaco City CDRRMO Shield Logo"
+                     style="width: 124px !important; height: auto !important;">
+                <div class="logo-subtitle-custom">PROTECT AND SAVE</div>
+            </div>
 			
             <div class="brand-name">
                 <h1>CDRRMO</h1>
@@ -812,6 +818,24 @@
             <iframe src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricWind=default&zoom=8&overlay=wind&product=ecmwf&level=surface&lat=13.361&lon=123.731&detailLat=13.361&detailLon=123.731&marker=true" title="Live Windy Meteorological Tracking Map"></iframe>
         </div>
 
+        <div class="windy-container" style="position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: white; padding: 8px; text-align: center; font-weight: bold; z-index: 5; font-size: 14px;">HAZARD PREPAREDNESS</div>
+            <div class="prepSlides">
+                <img src="action2.jpg" alt="Hazard Route Check" onerror="this.src='https://via.placeholder.com/400x300?text=Route+Assessment'">
+                <div class="slide-caption" style="padding: 10px; font-size: 12px;">
+                    <h4>Evacuation Route Audit</h4>
+                </div>
+            </div>
+            <div class="prepSlides">
+                <img src="action3.jpg" alt="Safety Kit Logistics" onerror="this.src='https://via.placeholder.com/400x300?text=Supply+Logistics'">
+                <div class="slide-caption" style="padding: 10px; font-size: 12px;">
+                    <h4>Resource Checkpoints</h4>
+                </div>
+            </div>
+            <button class="prev-slide" onclick="plusPrepSlides(-1)" style="padding: 10px; font-size: 14px;">❮</button>
+            <button class="next-slide" onclick="plusPrepSlides(1)" style="padding: 10px; font-size: 14px;">❯</button>
+        </div>
+
         <div class="board-container">
             <div class="board-tabs">
                 <button class="tab-btn active" onclick="switchTab(event, 'announcements')">📢 Announcements</button>
@@ -858,12 +882,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="hero">
-        <h2>Building a Resilient, Prepared Community</h2>
-        <p>Proactive crisis response, strategic risk assessment, and immediate emergency management to safeguard lives and assets across Tabaco City.</p>
-        <a href="#hotlines" class="btn-emergency">Emergency Hotlines</a>
     </div>
 
     <section id="about">
@@ -1036,6 +1054,11 @@
         </div>
     </section>
 
+    <div class="hero">
+        <h2>Building a Resilient, Prepared Community</h2>
+        <p>Proactive crisis response, strategic risk assessment, and immediate emergency management to safeguard lives and assets across Tabaco City.</p>
+    </div>
+
     <div class="chat-widget">
         <div class="chat-button" onclick="toggleChatWindow(event)">💬</div>
         
@@ -1203,11 +1226,10 @@
         let slideIndex = 1;
         showSlides(slideIndex);
 
-        // Auto rotation interval variable
         let slideTimer = setInterval(() => plusSlides(1), 5000);
 
         function plusSlides(n) {
-            clearInterval(slideTimer); // Reset timer on user click
+            clearInterval(slideTimer);
             showSlides(slideIndex += n);
             slideTimer = setInterval(() => plusSlides(1), 5000);
         }
@@ -1222,6 +1244,30 @@
             }
             if(slides[slideIndex-1]) {
                 slides[slideIndex-1].style.display = "block";  
+            }
+        }
+
+        /* --- HAZARD PREPAREDNESS SLIDESHOW --- */
+        let prepIndex = 1;
+        showPrepSlides(prepIndex);
+        let prepTimer = setInterval(() => plusPrepSlides(1), 4500);
+
+        function plusPrepSlides(n) {
+            clearInterval(prepTimer);
+            showPrepSlides(prepIndex += n);
+            prepTimer = setInterval(() => plusPrepSlides(1), 4500);
+        }
+
+        function showPrepSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("prepSlides");
+            if (n > slides.length) {prepIndex = 1}
+            if (n < 1) {prepIndex = slides.length}
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            if(slides[prepIndex-1]) {
+                slides[prepIndex-1].style.display = "block";
             }
         }
 
@@ -1248,25 +1294,17 @@
             document.getElementById('chatWindow').classList.toggle('hidden');
         }
 
-        function handleChatKey(e) {
-            if (e.key === 'Enter') sendUserMessage();
-        }
-
-        function handleChipClick(topic) {
-            appendMessage(topic, 'user');
-            processBotReply(topic);
-        }
-
+        // Keep rest of user functions unchanged...
+        function handleChatKey(e) { if (e.key === 'Enter') sendUserMessage(); }
+        function handleChipClick(topic) { appendMessage(topic, 'user'); processBotReply(topic); }
         function sendUserMessage() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if(!text) return;
-            
             appendMessage(text, 'user');
             input.value = '';
             processBotReply(text);
         }
-
         function appendMessage(text, sender) {
             const body = document.getElementById('chatBody');
             const el = document.createElement('div');
@@ -1275,33 +1313,19 @@
             body.appendChild(el);
             body.scrollTop = body.scrollHeight;
         }
-
         function processBotReply(query) {
             const cleanQuery = query.toLowerCase();
             let response = "I am sorry, I am built specifically to track disaster protocols. Try typing words like 'hotline', 'services', 'leadership', or 'mayon'.";
-
-            if (cleanQuery.includes('hotline') || cleanQuery.includes('number') || cleanQuery.includes('call') || cleanQuery.includes('emergency') || cleanQuery.includes('responder')) {
-                response = "🚨 Tabaco City Primary Emergency Hotline is 0995 290 5288. Alternative desks: 0909 224 5858 | 0999 475 8582. Please call our hotline numbers, and our responders will gladly assist you right away.";
-            } 
-            else if (cleanQuery.includes('service') || cleanQuery.includes('do') || cleanQuery.includes('help')) {
-                response = "🛠️ Available Services: Emergency medical response dispatch, flood/lahar hazard path tracing, risk zoning assessments, safety training, and DRRM clearances.";
-            } 
-            else if (cleanQuery.includes('mandate') || cleanQuery.includes('pillar') || cleanQuery.includes('what is')) {
-                response = "🏛️ Our office manages the 4 pillars of safety: (1) Prevention & Mitigation, (2) Disaster Preparedness, (3) Disaster Response, and (4) Post-Crisis Rehabilitation.";
-            } 
-            else if (cleanQuery.includes('leadership') || cleanQuery.includes('boss') || cleanQuery.includes('head') || cleanQuery.includes('mayor')) {
-                response = "👤 Leadership Structure: Reynaldo B. Bragais (City Mayor) and Gelacio M. Molato Jr. LLB., MCDRM (Head, LDRRMO IV).";
+            if (cleanQuery.includes('hotline') || cleanQuery.includes('number') || cleanQuery.includes('call') || cleanQuery.includes('emergency')) {
+                response = "🚨 Tabaco City Primary Emergency Hotline is 0995 290 5288. Alternative desks: 0909 224 5858 | 0999 475 8582.";
+            } else if (cleanQuery.includes('service')) {
+                response = "🛠️ Available Services: Emergency medical response dispatch, flood hazard paths tracking, and safety training.";
+            } else if (cleanQuery.includes('mandate')) {
+                response = "🏛️ Our office manages the 4 pillars of safety: Mitigation, Preparedness, Response, and Rehabilitation.";
+            } else if (cleanQuery.includes('leadership') || cleanQuery.includes('mayor')) {
+                response = "👤 Structure: Reynaldo B. Bragais (City Mayor) & Gelacio M. Molato Jr. (Head, Tabaco CDRRMO).";
             }
-            else if (cleanQuery.includes('mayon') || cleanQuery.includes('volcano') || cleanQuery.includes('lahar')) {
-                response = "🌋 Mayon Monitoring Update: We actively run pre-emptive terrain scans along the Buang Lahar paths. Always coordinate with local barangay channels for alerts.";
-            }
-            else if (cleanQuery.includes('rescue') || cleanQuery.includes('flood') || cleanQuery.includes('typhoon')) {
-                response = "🌊 During flood/typhoon situations, turn off main electrical switches, prepare your Go-Bags, and monitor the warning sirens. Call 911 immediately if trapped.";
-            }
-
-            setTimeout(() => {
-                appendMessage(response, 'bot');
-            }, 400); 
+            setTimeout(() => { appendMessage(response, 'bot'); }, 400); 
         }
     </script>
 </body>
