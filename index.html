@@ -176,7 +176,18 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
-        /* Horizontal Continuous Scroll Container for Hazard Preparedness */
+        /* Standard Slideshow Container */
+        .slideshow-container {
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 380px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            width: 100%;
+        }
+
+        /* NEW Horizontal Continuous Scroll Container for Hazard Preparedness */
         .hazard-scroll-container {
             position: relative;
             background: #ffffff;
@@ -186,22 +197,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             width: 100%;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Top-Left Title Layout Vector */
-        .hazard-section-title {
-            padding: 15px 20px 5px 20px;
-            margin: 0;
-            font-size: 16px;
-            font-weight: 700;
-            color: #111111;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-family: 'Segoe UI', sans-serif;
-            border-bottom: 1px solid #f1f5f9;
-            background: #ffffff;
         }
 
         .hazard-scroll-wrapper {
@@ -209,8 +204,8 @@
             gap: 15px;
             overflow-x: auto;
             scroll-behavior: smooth;
-            flex: 1;
-            padding: 15px 20px;
+            height: 100%;
+            padding: 10px;
             box-sizing: border-box;
             scrollbar-width: none; /* Hide scrollbar for Firefox */
         }
@@ -238,18 +233,7 @@
         /* Bulletin Section Heights Uniformity */
         .bulletin-section .hazard-scroll-container,
         .bulletin-section .dashboard-frame {
-            height: 470px; 
-        }
-
-        /* Standard Slideshow Container */
-        .slideshow-container {
-            position: relative;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-            height: 380px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            width: 100%;
+            height: 450px; 
         }
 
         .mySlides {
@@ -282,7 +266,7 @@
         .prev-slide, .next-slide {
             cursor: pointer;
             position: absolute;
-            top: 55%;
+            top: 50%;
             transform: translateY(-50%);
             width: auto;
             padding: 16px;
@@ -822,7 +806,7 @@
         }
         @media (max-width: 900px) {
             .bulletin-section { grid-template-columns: 1fr; }
-            .bulletin-section .hazard-scroll-container, .bulletin-section .dashboard-frame { height: auto; min-height: 400px; }
+            .bulletin-section .hazard-scroll-container, .bulletin-section .dashboard-frame { height: auto; min-height: 380px; }
             .slideshow-container { height: 320px; }
             .prepSlides { flex: 0 0 90%; } /* Slightly wider peek on small mobile views */
         }
@@ -873,9 +857,6 @@
     <!-- First Line Grid Layout (Horizontal Slider strip matching Dashboard height) -->
     <div class="bulletin-section">
         <div class="hazard-scroll-container">
-            <!-- Top-Left Title Header Vector -->
-            <h3 class="hazard-section-title">Hazard Preparedness</h3>
-            
             <div class="hazard-scroll-wrapper" id="prepSliderFrame">
                 <div class="prepSlides">
                     <img src="Linog1.JPG" alt="Hazard Mitigation Map 1">
@@ -1359,15 +1340,72 @@
             }
         }
 
-        /* --- NATIVE AUTO-SLOW SCROLL ENGINE FOR HAZARD PREPAREDNESS --- */
-        let hazardAutoScroll = setInterval(() => scrollPrepSlides(1), 4000);
-
+        /* --- NATIVE SCROLL ENGINE FOR HAZARD PREPAREDNESS --- */
         function scrollPrepSlides(direction) {
             const container = document.getElementById('prepSliderFrame');
+            // Scrolls by roughly the width of one dynamic peeking item
             const scrollAmount = container.clientWidth * 0.85; 
-            
-            // Check if we reached the maximum scroll end point, reset back to first slide seamlessly
-            if (direction === 1 && (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10)) {
-                container.scrollTo({ left: 0, behavior: 'smooth' });
-            } else if (direction === -1 && container.scrollLeft <= 0) {
-                container.scrollTo({ left: container.Normally I can help with things like this, but I don't seem to have access to that content. You can try again or ask me for something else.
+            container.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+
+        /* --- TAB CONTROL ENGINE --- */
+        function switchTab(evt, tabName) {
+            let i, boardContent, tabLinks;
+            boardContent = document.getElementsByClassName("board-content");
+            for (i = 0; i < boardContent.length; i++) {
+                boardContent[i].classList.remove("active");
+            }
+            tabLinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        /* --- CHATBOT RUNTIME INTERFACE --- */
+        function toggleChatWindow(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            document.getElementById('chatWindow').classList.toggle('hidden');
+        }
+
+        function handleChatKey(e) { if (e.key === 'Enter') sendUserMessage(); }
+        function handleChipClick(topic) { appendMessage(topic, 'user'); processBotReply(topic); }
+        function sendUserMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if(!text) return;
+            appendMessage(text, 'user');
+            input.value = '';
+            processBotReply(text);
+        }
+        function appendMessage(text, sender) {
+            const body = document.getElementById('chatBody');
+            const el = document.createElement('div');
+            el.className = `msg ${sender}`;
+            el.innerText = text;
+            body.appendChild(el);
+            body.scrollTop = body.scrollHeight;
+        }
+        function processBotReply(query) {
+            const cleanQuery = query.toLowerCase();
+            let response = "I am sorry, I am built specifically to track disaster protocols. Try typing words like 'hotline', 'services', 'leadership', or 'mayon'.";
+            if (cleanQuery.includes('hotline') || cleanQuery.includes('number') || cleanQuery.includes('call') || cleanQuery.includes('emergency')) {
+                response = "🚨 Tabaco City Primary Emergency Hotline is 0995 290 5288. Alternative desks: 0909 224 5858 | 0999 475 8582.";
+            } else if (cleanQuery.includes('service')) {
+                response = "🛠️ Available Services: Emergency medical response dispatch, hazard paths tracking, and safety training.";
+            } else if (cleanQuery.includes('mandate')) {
+                response = "🏛️ Our office manages the 4 pillars of safety: Mitigation, Preparedness, Response, and Rehabilitation.";
+            } else if (cleanQuery.includes('leadership') || cleanQuery.includes('mayor')) {
+                response = "👤 Structure: Reynaldo B. Bragais (City Mayor) & Gelacio M. Molato Jr. (Head, Tabaco CDRRMO).";
+            }
+            setTimeout(() => { appendMessage(response, 'bot'); }, 400); 
+        }
+    </script>
+</body>
+</html>
