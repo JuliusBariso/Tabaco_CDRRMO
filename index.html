@@ -187,7 +187,7 @@
             width: 100%;
         }
 
-        /* NEW Horizontal Continuous Scroll Container for Hazard Preparedness */
+        /* Horizontal Scroll Container for Hazard Preparedness */
         .hazard-scroll-container {
             position: relative;
             background: #ffffff;
@@ -854,9 +854,8 @@
         </div>
     </header>
 
-    <!-- First Line Grid Layout (Horizontal Slider strip matching Dashboard height) -->
     <div class="bulletin-section">
-        <div class="hazard-scroll-container">
+        <div class="hazard-scroll-container" id="hazardScrollContainer">
             <div class="hazard-scroll-wrapper" id="prepSliderFrame">
                 <div class="prepSlides">
                     <img src="Linog1.JPG" alt="Hazard Mitigation Map 1">
@@ -887,7 +886,6 @@
         </div>
     </div>
 
-    <!-- Next Line Structure Array (Windy Met-Frame | Core Slideshow | Announcement Board) -->
     <div class="monitoring-section">
         <div class="windy-container">
             <iframe src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricWind=default&zoom=8&overlay=wind&product=ecmwf&level=surface&lat=13.361&lon=123.731&detailLat=13.361&detailLon=123.731&marker=true" title="Live Windy Meteorological Tracking Map"></iframe>
@@ -1064,7 +1062,6 @@
         </div>
     </section>
 
-    <!-- Modal Layout System for Portal Access -->
     <div id="crewPortalModal" class="crew-modal-overlay hidden" onclick="closeCrewPortal()">
         <div class="portal-box" id="portalBox" onclick="event.stopPropagation()">
             <button class="modal-close-btn" onclick="closeCrewPortal()">✕</button>
@@ -1340,15 +1337,66 @@
             }
         }
 
-        /* --- NATIVE SCROLL ENGINE FOR HAZARD PREPAREDNESS --- */
+        /* --- AUTOMATED SCROLL ENGINE FOR HAZARD PREPAREDNESS --- */
+        const hazardContainer = document.getElementById('hazardScrollContainer');
+        const prepSliderFrame = document.getElementById('prepSliderFrame');
+        let autoScrollInterval = null;
+        let isPaused = false;
+        
+        // Configuration settings
+        const scrollSpeed = 1.5; // Controls pixels shifted per frame
+        const frameInterval = 25; // Controls tick timing
+
+        function startAutoScroll() {
+            if (autoScrollInterval) clearInterval(autoScrollInterval);
+            
+            autoScrollInterval = setInterval(() => {
+                if (isPaused) return;
+                
+                // Track current offset bounds
+                const currentScroll = prepSliderFrame.scrollLeft;
+                const maxScrollableWidth = prepSliderFrame.scrollWidth - prepSliderFrame.clientWidth;
+
+                // Loop layout validation check
+                if (currentScroll >= maxScrollableWidth - 2) {
+                    prepSliderFrame.scrollLeft = 0; // Seamless snap back to the first slide
+                } else {
+                    prepSliderFrame.scrollLeft += scrollSpeed;
+                }
+            }, frameInterval);
+        }
+
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+
+        // Toggle triggers handling mouse hover states
+        hazardContainer.addEventListener('mouseenter', () => { isPaused = true; });
+        hazardContainer.addEventListener('mouseleave', () => { isPaused = false; });
+
+        // Touch trigger listeners for mobile responsive layouts
+        hazardContainer.addEventListener('touchstart', () => { isPaused = true; }, {passive: true});
+        hazardContainer.addEventListener('touchend', () => { isPaused = false; }, {passive: true});
+
+        // Initialize continuous runtime framework execution
+        startAutoScroll();
+
         function scrollPrepSlides(direction) {
-            const container = document.getElementById('prepSliderFrame');
-            // Scrolls by roughly the width of one dynamic peeking item
-            const scrollAmount = container.clientWidth * 0.85; 
-            container.scrollBy({
-                left: direction * scrollAmount,
-                behavior: 'smooth'
-            });
+            // Allows fallback override compatibility for direct arrow button navigation clicks
+            const scrollAmount = prepSliderFrame.clientWidth * 0.85; 
+            const currentScroll = prepSliderFrame.scrollLeft;
+            const maxScrollableWidth = prepSliderFrame.scrollWidth - prepSliderFrame.clientWidth;
+
+            if (direction === 1 && currentScroll >= maxScrollableWidth - 10) {
+                prepSliderFrame.scrollLeft = 0;
+            } else if (direction === -1 && currentScroll <= 10) {
+                prepSliderFrame.scrollLeft = maxScrollableWidth;
+            } else {
+                prepSliderFrame.scrollBy({
+                    left: direction * scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
         }
 
         /* --- TAB CONTROL ENGINE --- */
@@ -1374,6 +1422,7 @@
             document.getElementById('chatWindow').classList.toggle('hidden');
         }
 
+        // Input monitoring checks
         function handleChatKey(e) { if (e.key === 'Enter') sendUserMessage(); }
         function handleChipClick(topic) { appendMessage(topic, 'user'); processBotReply(topic); }
         function sendUserMessage() {
