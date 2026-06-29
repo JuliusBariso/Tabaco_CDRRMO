@@ -858,58 +858,58 @@
         <div class="hazard-scroll-container" id="hazardScrollContainer">
             <div class="hazard-scroll-wrapper" id="prepSliderFrame">
                 <div class="prepSlides">
-                    <img src="Linog1.JPG" alt="Hazard Mitigation Map 1">
+                    <img src="Linog1.JPG" alt="Hazard Mitigation Map 1" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
                 <div class="prepSlides">
-                    <img src="Linog2.JPG" alt="Hazard Mitigation Map 2">
+                    <img src="Linog2.JPG" alt="Hazard Mitigation Map 2" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>	
                 <div class="prepSlides">
-                    <img src="Linog3.JPG" alt="Hazard Mitigation Map 3">
+                    <img src="Linog3.JPG" alt="Hazard Mitigation Map 3" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>   
                 <div class="prepSlides">
-                    <img src="Linog4.JPG" alt="Hazard Mitigation Map 4">
+                    <img src="Linog4.JPG" alt="Hazard Mitigation Map 4" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
                 <div class="prepSlides">
-                    <img src="Linog5.JPG" alt="Hazard Mitigation Map 5">
+                    <img src="Linog5.JPG" alt="Hazard Mitigation Map 5" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
                 <div class="prepSlides">
-                    <img src="Linog6.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Linog6.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
                 <div class="prepSlides">
-                    <img src="Bagyo1.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bagyo1.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bagyo2.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bagyo2.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bagyo3.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bagyo3.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bagyo4.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bagyo4.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bagyo5.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bagyo5.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bagyo6.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bagyo6.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bulkan1.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bulkan1.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bulkan2.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bulkan2.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bulkan3.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bulkan3.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bulkan4.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bulkan4.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bulkan5.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bulkan5.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 				<div class="prepSlides">
-                    <img src="Bulkan6.JPG" alt="Hazard Mitigation Map 6">
+                    <img src="Bulkan6.JPG" alt="Hazard Mitigation Map 6" style="cursor: zoom-in;" onclick="zoomSlide(this.src)">
                 </div>
 			</div>
             <button class="prev-slide" onclick="scrollPrepSlides(-1)">❮</button>
@@ -1204,11 +1204,23 @@
             </div>
         </div>
     </div>
-
+<div id="imageZoomModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); z-index: 4000; justify-content: center; align-items: center; flex-direction: column;" onclick="closeZoomModal()">
+    <span style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+    <img id="zoomedImage" src="" alt="Zoomed Slide View" style="max-width: 90%; max-height: 80%; object-fit: contain; border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+    <div style="margin-top: 20px; display: flex; gap: 15px;">
+        <a id="downloadSlideBtn" href="" download class="btn-portal" style="background-color: var(--success-color); text-decoration: none; padding: 10px 20px; width: auto; border-radius: 4px; font-weight: bold;">
+            <i class="fa-solid fa-download"></i> Save Slide Image
+        </a>
+        <button class="btn-portal" style="background-color: rgba(255,255,255,0.2); width: auto; padding: 10px 20px;" onclick="closeZoomModal()">Close</button>
+    </div>
+</div>
     <footer>
         <p>© 2026 Tabaco City Disaster Risk Reduction and Management Office (CDRRMO). All Rights Reserved.<br>By: Julius T. Bariso</p>
     </footer>
+    
 
+
+	
     <script>
         /* --- MENU TOGGLE LOGIC --- */
         function toggleMenu(event) {
@@ -1491,6 +1503,26 @@
             }
             setTimeout(() => { appendMessage(response, 'bot'); }, 400); 
         }
-    </script>
+/* --- SLIDE ZOOM MODAL ENGINE --- */
+function zoomSlide(imageSrc) {
+    // Pause the automated background scrolling while viewing
+    isPaused = true;
+    
+    const modal = document.getElementById('imageZoomModal');
+    const zoomedImg = document.getElementById('zoomedImage');
+    const downloadBtn = document.getElementById('downloadSlideBtn');
+    
+    zoomedImg.src = imageSrc;
+    downloadBtn.href = imageSrc; // Links the download attribute to the target JPG file
+    
+    modal.style.display = 'flex';
+}
+
+function closeZoomModal() {
+    document.getElementById('imageZoomModal').style.display = 'none';
+    // Resume auto-scroll when modal is dismissed
+    isPaused = false;
+}
+	</script>
 </body>
 </html>
