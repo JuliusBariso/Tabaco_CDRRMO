@@ -171,7 +171,6 @@
             background-color: #ffffff;
             padding: 30px 5%;
             display: grid;
-            /* Modified grid system to display both frames with 1:1 equal widths */
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             border-bottom: 1px solid #e2e8f0;
@@ -183,21 +182,37 @@
             background: #000;
             border-radius: 8px;
             overflow: hidden;
-            height: 380px;
+            height: 380px; /* Default height for secondary map row */
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             width: 100%;
         }
+
+        /* Specific height override to prevent Hazard Preparedness slides from cutting off */
+        .bulletin-section .slideshow-container,
+        .bulletin-section .dashboard-frame {
+            height: 450px; 
+        }
+
         .mySlides, .prepSlides {
             display: none;
             height: 100%;
             position: relative;
         }
-        /* Both slideshow configurations adjusted to cover entire containers seamlessly */
-        .mySlides img, .prepSlides img {
+
+        .mySlides img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
+        /* Changed from cover to contain so layout sheets/images display safely in full frame */
+        .prepSlides img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #1a1a1a; /* Clean dark background frame filler if dimensions vary slightly */
+        }
+
         .slide-caption {
             position: absolute;
             bottom: 0;
@@ -756,6 +771,7 @@
         }
         @media (max-width: 900px) {
             .bulletin-section { grid-template-columns: 1fr; }
+            .bulletin-section .slideshow-container, .bulletin-section .dashboard-frame { height: auto; min-height: 380px; }
             .slideshow-container { height: 320px; }
         }
         @media (max-width: 768px) {
@@ -802,6 +818,7 @@
         </div>
     </header>
 
+    <!-- First Line Grid Layout (Equally sized side-by-side frames matching 450px height) -->
     <div class="bulletin-section">
         <div class="slideshow-container" id="prepSliderFrame">
             <div class="prepSlides">
@@ -832,12 +849,13 @@
             <button class="next-slide" onclick="plusPrepSlides(1)">❯</button>
         </div>
         
-        <div style="background-color: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; display: flex; flex-direction: column; justify-content: center; text-align: center;">
+        <div class="dashboard-frame" style="background-color: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; display: flex; flex-direction: column; justify-content: center; text-align: center; box-sizing: border-box;">
             <h4 style="margin: 0 0 10px 0; color: var(--primary-color); font-size: 20px;">Live Tactical Situation Dashboard</h4>
             <p style="margin: 0; font-size: 14px; color: #555; line-height: 1.5;">This operational bulletin panel houses live monitoring metrics, satellite updates, and active public announcements tracked by our Tabaco City command deck. Review environmental data maps and alerts concurrently on the feeds provided below.</p>
         </div>
     </div>
 
+    <!-- Next Line Structure Array (Windy Met-Frame | Core Slideshow | Announcement Board) -->
     <div class="monitoring-section">
         <div class="windy-container">
             <iframe src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricWind=default&zoom=8&overlay=wind&product=ecmwf&level=surface&lat=13.361&lon=123.731&detailLat=13.361&detailLon=123.731&marker=true" title="Live Windy Meteorological Tracking Map"></iframe>
@@ -1014,6 +1032,7 @@
         </div>
     </section>
 
+    <!-- Modal Layout System for Portal Access -->
     <div id="crewPortalModal" class="crew-modal-overlay hidden" onclick="closeCrewPortal()">
         <div class="portal-box" id="portalBox" onclick="event.stopPropagation()">
             <button class="modal-close-btn" onclick="closeCrewPortal()">✕</button>
@@ -1328,11 +1347,10 @@
         }, {passive: true});
 
         function handleSwipeGesture() {
-            // Threshold barrier of 40px keeps micro-movements from changing slides out of turn
             if (touchStartX - touchEndX > 40) {
-                plusPrepSlides(1); // Swiped Left -> Load next slide
+                plusPrepSlides(1); 
             } else if (touchEndX - touchStartX > 40) {
-                plusPrepSlides(-1); // Swiped Right -> Load previous slide
+                plusPrepSlides(-1); 
             }
         }
 
