@@ -176,24 +176,67 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
-        /* Slideshow Module */
+        /* Standard Slideshow Container */
         .slideshow-container {
             position: relative;
             background: #000;
             border-radius: 8px;
             overflow: hidden;
-            height: 380px; /* Default height for secondary map row */
+            height: 380px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             width: 100%;
         }
 
-        /* Specific height override to prevent Hazard Preparedness slides from cutting off */
-        .bulletin-section .slideshow-container,
+        /* NEW Horizontal Continuous Scroll Container for Hazard Preparedness */
+        .hazard-scroll-container {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            height: 450px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .hazard-scroll-wrapper {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            height: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            scrollbar-width: none; /* Hide scrollbar for Firefox */
+        }
+
+        .hazard-scroll-wrapper::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for Chrome/Safari */
+        }
+
+        /* Dynamic Peeking Slides Layout */
+        .prepSlides {
+            flex: 0 0 85%; /* Shows first slide fully on the left, next slide peeks out 15% on the right */
+            height: 100%;
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .prepSlides img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Keeps text layout safely unclipped */
+            background-color: #f8f9fa; /* Clean light frame match instead of heavy black bars */
+        }
+
+        /* Bulletin Section Heights Uniformity */
+        .bulletin-section .hazard-scroll-container,
         .bulletin-section .dashboard-frame {
             height: 450px; 
         }
 
-        .mySlides, .prepSlides {
+        .mySlides {
             display: none;
             height: 100%;
             position: relative;
@@ -203,14 +246,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        /* Changed from cover to contain so layout sheets/images display safely in full frame */
-        .prepSlides img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background-color: #1a1a1a; /* Clean dark background frame filler if dimensions vary slightly */
         }
 
         .slide-caption {
@@ -241,7 +276,7 @@
             transition: 0.3s ease;
             border-radius: 0 3px 3px 0;
             user-select: none;
-            background-color: rgba(0,0,0,0.3);
+            background-color: rgba(0,0,0,0.4);
             border: none;
             z-index: 10;
         }
@@ -771,8 +806,9 @@
         }
         @media (max-width: 900px) {
             .bulletin-section { grid-template-columns: 1fr; }
-            .bulletin-section .slideshow-container, .bulletin-section .dashboard-frame { height: auto; min-height: 380px; }
+            .bulletin-section .hazard-scroll-container, .bulletin-section .dashboard-frame { height: auto; min-height: 380px; }
             .slideshow-container { height: 320px; }
+            .prepSlides { flex: 0 0 90%; } /* Slightly wider peek on small mobile views */
         }
         @media (max-width: 768px) {
             header { flex-direction: row !important; justify-content: space-between !important; text-align: left !important; gap: 15px; }
@@ -818,35 +854,31 @@
         </div>
     </header>
 
-    <!-- First Line Grid Layout (Equally sized side-by-side frames matching 450px height) -->
+    <!-- First Line Grid Layout (Horizontal Slider strip matching Dashboard height) -->
     <div class="bulletin-section">
-        <div class="slideshow-container" id="prepSliderFrame">
-            <div class="prepSlides">
-                <img src="Linog1.JPG" alt="Hazard Mitigation Map 1">
-                <div class="slide-caption" style="padding: 10px; font-size: 12px;"></div>
+        <div class="hazard-scroll-container">
+            <div class="hazard-scroll-wrapper" id="prepSliderFrame">
+                <div class="prepSlides">
+                    <img src="Linog1.JPG" alt="Hazard Mitigation Map 1">
+                </div>
+                <div class="prepSlides">
+                    <img src="Linog2.JPG" alt="Hazard Mitigation Map 2">
+                </div>	
+                <div class="prepSlides">
+                    <img src="Linog3.JPG" alt="Hazard Mitigation Map 3">
+                </div>   
+                <div class="prepSlides">
+                    <img src="Linog4.JPG" alt="Hazard Mitigation Map 4">
+                </div>
+                <div class="prepSlides">
+                    <img src="Linog5.JPG" alt="Hazard Mitigation Map 5">
+                </div>
+                <div class="prepSlides">
+                    <img src="Linog6.JPG" alt="Hazard Mitigation Map 6">
+                </div>
             </div>
-            <div class="prepSlides">
-                <img src="Linog2.JPG" alt="Hazard Mitigation Map 2">
-                <div class="slide-caption" style="padding: 10px; font-size: 12px;"></div>
-			</div>	
-		    <div class="prepSlides">
-                <img src="Linog3.JPG" alt="Hazard Mitigation Map 3">
-                <div class="slide-caption" style="padding: 10px; font-size: 12px;"></div>
-		    </div>   
-	        <div class="prepSlides">
-                <img src="Linog4.JPG" alt="Hazard Mitigation Map 4">
-                <div class="slide-caption" style="padding: 10px; font-size: 12px;"></div>
-		    </div>
-		    <div class="prepSlides">
-                <img src="Linog5.JPG" alt="Hazard Mitigation Map 5">
-                <div class="slide-caption" style="padding: 10px; font-size: 12px;"></div>
-		    </div>
-		    <div class="prepSlides">
-                <img src="Linog6.JPG" alt="Hazard Mitigation Map 6">
-                <div class="slide-caption" style="padding: 10px; font-size: 12px;"></div>
-			</div>
-            <button class="prev-slide" onclick="plusPrepSlides(-1)">❮</button>
-            <button class="next-slide" onclick="plusPrepSlides(1)">❯</button>
+            <button class="prev-slide" onclick="scrollPrepSlides(-1)">❮</button>
+            <button class="next-slide" onclick="scrollPrepSlides(1)">❯</button>
         </div>
         
         <div class="dashboard-frame" style="background-color: #fafafa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; display: flex; flex-direction: column; justify-content: center; text-align: center; box-sizing: border-box;">
@@ -1284,7 +1316,7 @@
             document.getElementById('loginView').classList.remove('hidden');
         }
 
-        /* --- SLIDESHOW ENGINE --- */
+        /* --- SLIDESHOW ENGINE (Middle Row) --- */
         let slideIndex = 1;
         showSlides(slideIndex);
         let slideTimer = setInterval(() => plusSlides(1), 5000);
@@ -1308,50 +1340,15 @@
             }
         }
 
-        /* --- HAZARD PREPAREDNESS SLIDESHOW ENGINE --- */
-        let prepIndex = 1;
-        showPrepSlides(prepIndex);
-        let prepTimer = setInterval(() => plusPrepSlides(1), 5000); 
-
-        function plusPrepSlides(n) {
-            clearInterval(prepTimer);
-            showPrepSlides(prepIndex += n);
-            prepTimer = setInterval(() => plusPrepSlides(1), 5000); 
-        }
-
-        function showPrepSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("prepSlides");
-            if (n > slides.length) {prepIndex = 1}
-            if (n < 1) {prepIndex = slides.length}
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            if(slides[prepIndex-1]) {
-                slides[prepIndex-1].style.display = "block";
-            }
-        }
-
-        /* --- SWIPE GESTURE EVENT HANDLERS --- */
-        let touchStartX = 0;
-        let touchEndX = 0;
-        const sliderFrame = document.getElementById('prepSliderFrame');
-
-        sliderFrame.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        }, {passive: true});
-
-        sliderFrame.addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipeGesture();
-        }, {passive: true});
-
-        function handleSwipeGesture() {
-            if (touchStartX - touchEndX > 40) {
-                plusPrepSlides(1); 
-            } else if (touchEndX - touchStartX > 40) {
-                plusPrepSlides(-1); 
-            }
+        /* --- NATIVE SCROLL ENGINE FOR HAZARD PREPAREDNESS --- */
+        function scrollPrepSlides(direction) {
+            const container = document.getElementById('prepSliderFrame');
+            // Scrolls by roughly the width of one dynamic peeking item
+            const scrollAmount = container.clientWidth * 0.85; 
+            container.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
         }
 
         /* --- TAB CONTROL ENGINE --- */
