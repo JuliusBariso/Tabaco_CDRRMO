@@ -171,7 +171,8 @@
             background-color: #ffffff;
             padding: 30px 5%;
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            /* Modified grid system to display both frames with 1:1 equal widths */
+            grid-template-columns: 1fr 1fr;
             gap: 30px;
             border-bottom: 1px solid #e2e8f0;
         }
@@ -191,16 +192,11 @@
             height: 100%;
             position: relative;
         }
-        .mySlides img {
+        /* Both slideshow configurations adjusted to cover entire containers seamlessly */
+        .mySlides img, .prepSlides img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        .prepSlides img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background-color: #1c1a19; 
         }
         .slide-caption {
             position: absolute;
@@ -806,9 +802,8 @@
         </div>
     </header>
 
-    <!-- First Line Content Array Matrix (Hazard Slideshow paired with Live Bulletin Block) -->
     <div class="bulletin-section">
-        <div class="slideshow-container">
+        <div class="slideshow-container" id="prepSliderFrame">
             <div class="prepSlides">
                 <img src="Linog1.JPG" alt="Hazard Mitigation Map 1">
                 <div class="slide-caption" style="padding: 10px; font-size: 12px;"></div>
@@ -843,7 +838,6 @@
         </div>
     </div>
 
-    <!-- Next Line Structure Array (Windy Met-Frame | Adjusted Core Slideshow | Announcement Board) -->
     <div class="monitoring-section">
         <div class="windy-container">
             <iframe src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=default&metricWind=default&zoom=8&overlay=wind&product=ecmwf&level=surface&lat=13.361&lon=123.731&detailLat=13.361&detailLon=123.731&marker=true" title="Live Windy Meteorological Tracking Map"></iframe>
@@ -1020,7 +1014,6 @@
         </div>
     </section>
 
-    <!-- Modal Layout System for Portal Access (Safely detached from scrollable layout) -->
     <div id="crewPortalModal" class="crew-modal-overlay hidden" onclick="closeCrewPortal()">
         <div class="portal-box" id="portalBox" onclick="event.stopPropagation()">
             <button class="modal-close-btn" onclick="closeCrewPortal()">✕</button>
@@ -1102,7 +1095,6 @@
     <div class="chat-widget">
         <div class="chat-button" onclick="toggleChatWindow(event)">💬</div>
         
-        <!-- Modified Framework: Hidden classification removed so widget starts maximized instantly -->
         <div class="chat-window" id="chatWindow" onclick="event.stopPropagation();">
             <div class="chat-header">
                 <span>Tabaco CDRRMO Assistant</span>
@@ -1147,12 +1139,12 @@
         /* --- MODAL DIALOG INTERACTIVE TRIGGERS --- */
         function openCrewPortal() {
             document.getElementById('crewPortalModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Lock background scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeCrewPortal() {
             document.getElementById('crewPortalModal').classList.add('hidden');
-            document.body.style.overflow = ''; // Unlock background scrolling
+            document.body.style.overflow = ''; 
         }
 
         document.addEventListener('click', function(event) {
@@ -1318,6 +1310,29 @@
             }
             if(slides[prepIndex-1]) {
                 slides[prepIndex-1].style.display = "block";
+            }
+        }
+
+        /* --- SWIPE GESTURE EVENT HANDLERS --- */
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const sliderFrame = document.getElementById('prepSliderFrame');
+
+        sliderFrame.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        sliderFrame.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipeGesture();
+        }, {passive: true});
+
+        function handleSwipeGesture() {
+            // Threshold barrier of 40px keeps micro-movements from changing slides out of turn
+            if (touchStartX - touchEndX > 40) {
+                plusPrepSlides(1); // Swiped Left -> Load next slide
+            } else if (touchEndX - touchStartX > 40) {
+                plusPrepSlides(-1); // Swiped Right -> Load previous slide
             }
         }
 
